@@ -1,4 +1,6 @@
-from sqlalchemy import String
+from datetime import date
+
+from sqlalchemy import String, Date
 from sqlalchemy.orm import mapped_column, Mapped, DeclarativeBase
 
 
@@ -9,6 +11,7 @@ class User(Base):
     __tablename__ = 'users'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(255))
-    login: Mapped[str] = mapped_column(String(255))
+    username: Mapped[str] = mapped_column(String(255), unique=True)
     password: Mapped[str] = mapped_column(String())
+    salary: Mapped[float] = mapped_column()
+    next_raise_date: Mapped[date] = mapped_column(Date())

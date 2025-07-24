@@ -2,9 +2,14 @@ from pydantic import BaseModel
 
 
 class UserSchema(BaseModel):
-    login: str
+    username: str
     password: str
+
 
 class UserSalary(UserSchema):
     salary: float
     next_raise_date: str
+
+
+class TokenData(BaseModel):
+    username: str
