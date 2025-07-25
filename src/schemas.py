@@ -9,7 +9,3 @@ class UserSchema(BaseModel):
 class UserSalary(UserSchema):
     salary: float
     next_raise_date: str
-
-
-class TokenData(BaseModel):
-    username: str
