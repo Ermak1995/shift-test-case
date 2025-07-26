@@ -13,6 +13,4 @@ RUN curl -sSL https://install.python-poetry.org | python - && \
 
 COPY . /app
 
-WORKDIR /app/src
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -1,14 +1,7 @@
-import sys
-
-from src.schemas import UserSchema
-
-sys.path.insert(0, '../src')
-
 import pytest
 
 from httpx import AsyncClient, ASGITransport
-
-from src.main import app, authenticate_user
+from src.main import app
 
 
 @pytest.mark.asyncio

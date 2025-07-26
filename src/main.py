@@ -1,20 +1,20 @@
-from datetime import timedelta
-
 import jwt
+
+from datetime import timedelta
 from fastapi import FastAPI, Depends, HTTPException
-from schemas import UserSchema, UserSalary
-from auth import create_access_token, get_password_hash, verify_password, oauth2_scheme, SECRET_KEY, ALGORITHM
+from src.schemas import UserSchema, UserLoginSchema, UserSalarySchema
+from src.auth import create_access_token, get_password_hash, verify_password, oauth2_scheme, SECRET_KEY, ALGORITHM
 
 users = {
-    'John': UserSalary(
+    'John': UserSchema(
         username='John',
-        password=get_password_hash('1234'),
+        hashed_password=get_password_hash('1234'),
         salary=30000,
         next_raise_date='2025-12-12'
     ),
-    'Alice': UserSalary(
+    'Alice': UserSchema(
         username='Alice',
-        password=get_password_hash('qwerty'),
+        hashed_password=get_password_hash('qwerty'),
         salary=63500,
         next_raise_date='2026-01-25'
     ),
@@ -24,13 +24,13 @@ app = FastAPI()
 
 
 @app.post('/login')
-async def authenticate_user(data: UserSchema):
+async def authenticate_user(data: UserLoginSchema):
     username = data.username
     password = data.password
     user = users.get(username)
     if user is None:
         raise HTTPException(status_code=401, detail='Не удалось войти')
-    if not verify_password(password, user.password):
+    if not verify_password(password, user.hashed_password):
         raise HTTPException(status_code=401, detail='Неверный пароль')
     token = create_access_token({'sub': user.username}, expires_delta=timedelta(minutes=30))
     return {'token': token, 'token_type': 'Bearer'}
@@ -49,7 +49,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
 
 @app.get('/salary_info')
-async def get_salary_info(user: UserSalary = Depends(get_current_user)):
+async def get_salary_info(user: UserSalarySchema = Depends(get_current_user)):
     return {
         'username': user.username,
         'salary': user.salary,

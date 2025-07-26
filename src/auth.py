@@ -1,15 +1,11 @@
 import os
-from datetime import datetime, timezone, timedelta
-
 import jwt
-from dotenv import load_dotenv
+
+from datetime import datetime, timezone, timedelta
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
-from starlette.datastructures import Secret
 
-load_dotenv()
-
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 ALGORITHM = 'HS256'
 
